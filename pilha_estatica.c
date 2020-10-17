@@ -5,7 +5,7 @@
 
 #define MAX 10     							//quantidade de gondulas
 #define MAX_ITENS 5							//quantidade de elementos na gondula
-#define MAX_CARRINHO 10						//quantidade de elementos no carrinho
+#define MAX_CARRINHO 50						//quantidade de elementos no carrinho
 #define true 1
 #define false -1
 
@@ -16,16 +16,16 @@ typedef struct
    char NOMEPROD[100+1];
    char DESC[100+1];
    float PESO, VALOR;
-}
-REGISTRO;
+}REGISTRO;
 typedef struct{
 	REGISTRO reg[MAX_ITENS];
 	int topo;
 }PILHA;
-
-typedef PILHA CARRINHO;
-
-//funcao da pilha
+typedef struct{
+	REGISTRO reg[MAX_CARRINHO];
+	int topo;
+}CARRINHO;
+//funcao da struct PILHA
 void iniciarPilha(PILHA *pilha){ 			//vale para reiniciar pilha estatica tambem
 	pilha->topo = -1;
 }
@@ -53,7 +53,69 @@ int excluirElementoPilha(PILHA *pilha, REGISTRO *reg){
 	pilha->topo--;
 	return true;
 }
-//funções do programa
+//funcao da struct CARRINHO
+void iniciarCarrinho(CARRINHO *pilha){ 			//vale para reiniciar pilha estatica tambem
+	pilha->topo = -1;
+}
+int tamanhoCarrinho(CARRINHO *pilha){
+	return pilha->topo +1;
+}
+void exibirCarrinho(CARRINHO *pilha){
+	int i;
+	for(i=pilha->topo; i>=0;i--){
+		printf("\n%s, %s - valor: %.2f - peso: %.2f kg",
+		pilha->reg[i].NOMEPROD, pilha->reg[i].DESC, pilha->reg[i].VALOR, pilha->reg[i].PESO );
+	}
+}
+int inserirElementoCarrinho(CARRINHO *pilha, REGISTRO reg){
+	if(pilha->topo >= MAX_CARRINHO-1)
+		return false;
+	pilha->topo++;
+	pilha->reg[pilha->topo] = reg;
+	return true;
+}
+int excluirElementoCarrinho(CARRINHO *pilha, REGISTRO *reg){
+	if(pilha->topo == -1)
+		return false;
+	*reg = pilha->reg[pilha->topo];
+	pilha->topo--;
+	return true;
+}
+int qtdRegistrosArq(){
+	int qtd_registros;
+	arq_aux = fopen("CARRINHO.DAT", "r");
+	if(arq_aux == NULL)
+		qtd_registros = 0;
+	if (fseek(arq_aux, 0, SEEK_END)){
+		printf("\nERRO ao calcular o tamanho de arquivo!\n");
+        getch();
+        qtd_registros = -1;
+	} else {
+		qtd_registros = ftell(arq_aux) / sizeof(REGISTRO) ;
+	}
+	return qtd_registros;
+}
+void lerArquivoCarrinho(CARRINHO *pilha){
+	arq = fopen("CARRINHO.DAT", "rb");
+	if(arq == NULL)
+		printf("\nErro na abertura do arquvo");
+	else {
+		pilha->topo = qtdRegistrosArq();
+		fread(pilha->reg , sizeof(REGISTRO)*(tamanhoCarrinho(pilha)), 1, arq);
+	}	
+	fclose(arq); 
+	printf("\nfinalizado processo de abetura \\(*.*)/");
+}
+void salvarCarrinho(CARRINHO *pilha){
+	arq = fopen("CARRINHO.DAT", "wb");
+	if(arq ==NULL)
+		printf("\nErro ao abrir o arquivo");
+	else
+		if(fwrite(pilha->reg, sizeof(REGISTRO)*tamanhoCarrinho(pilha), 1, arq)==0)
+			printf("\nErro ao salvar");	
+	fclose(arq);
+}
+//funcoes do programa
 void menuPilha(){
 	system("cls");
     printf("------------SISTEMA GERENCIADOR DE GONDULAS--------------------\n");
@@ -114,42 +176,6 @@ void printPilha(PILHA *pilha){
 		i++;
 	}
 }
-int qtdRegistrosArq(){
-	int qtd_registros;
-	arq_aux = fopen("CARRINHO.DAT", "r");
-	if(arq_aux == NULL)
-		qtd_registros = 0;
-	if (fseek(arq_aux, 0, SEEK_END)){
-		printf("\nERRO ao calcular o tamanho de arquivo!\n");
-        getch();
-        qtd_registros = -1;
-	} else {
-		qtd_registros = ftell(arq_aux) / sizeof(REGISTRO) ;
-	}
-	return qtd_registros;
-}
-void lerArquivoCarrinho(PILHA *pilha){
-	arq = fopen("CARRINHO.DAT", "rb");
-	if(arq == NULL)
-		printf("\nErro na abertura do arquvo");
-	else {
-		pilha->topo = qtdRegistrosArq();
-		fread(pilha->reg , sizeof(REGISTRO)*(tamanhoPilha(pilha)), 1, arq);
-	}	
-	fclose(arq); 
-	printf("\nfinalizado processo de abetura \\(*.*)/");
-}
-
-void salvarCarrinho(PILHA *pilha){
-	arq = fopen("CARRINHO.DAT", "wb");
-	if(arq ==NULL)
-		printf("\nErro ao abrir o arquivo");
-	else
-		if(fwrite(pilha->reg, sizeof(REGISTRO)*tamanhoPilha(pilha), 1, arq)==0)
-			printf("\nErro ao salvar");
-	
-	fclose(arq);
-}
 //CODIGO MAIN
 int main(){
 	setlocale(LC_ALL, ""); 
@@ -160,7 +186,7 @@ int main(){
     int aux_while = true;
     
     iniciarConjuntoGondulas(&*polha);
-    iniciarPilha(&carrinho);
+    iniciarCarrinho(&carrinho);
     do{
     	menuPilha(); fflush(stdin); scanf("%d", &opc);
     	switch(opc){
@@ -176,10 +202,11 @@ int main(){
 				printf("\nLimpar qual gondula: (0 - 9)"); fflush(stdin); scanf("%d", &gondula );
     			if ((gondula>9) || (gondula<0))
     				printf("\nEssa gondula não existe!");
-				else
+				else {
 					excluirElementoPilha(&polha[gondula], &produto);
-					inserirElementoPilha(&carrinho, produto); 
-					printf("\nproduto resgatado: %s", produto.NOMEPROD);	
+					inserirElementoCarrinho(&carrinho, produto); 
+					printf("\nproduto resgatado: %s", produto.NOMEPROD);
+				}		
 				getch();
 				break;
 			case 3:
@@ -188,12 +215,12 @@ int main(){
 				break;
 			case 4:
 				printf("\nItens no carrinho: ");
-				exibirPilha(&carrinho);
+				exibirCarrinho(&carrinho);
 				getch();
 				break;
 			case 5:
 				printf("\nesvaziando carrinho: ");
-				iniciarPilha(&carrinho); 
+				iniciarCarrinho(&carrinho); 
 				getch();
 				break;
 			case 6:
@@ -203,7 +230,7 @@ int main(){
 				break;
 			case 7:
 				lerArquivoCarrinho(&carrinho);
-				excluirElementoPilha(&carrinho, &produto); 
+				excluirElementoCarrinho(&carrinho, &produto);
 				getch();
 				break;
 			case 0:
