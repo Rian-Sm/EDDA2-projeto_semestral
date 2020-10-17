@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
+#include <locale.h>
 
 #define DEFAULT_LIST 67 // analizar se é necessario
 #define MAX 100
@@ -131,6 +132,7 @@ void inicializaMenu(){
 }
 //CODIGO MAIN
 int main(){
+	setlocale(LC_ALL, ""); 
 	LISTA list;
 	REGISTRO registro;
 	int aux_busca;

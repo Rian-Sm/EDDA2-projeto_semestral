@@ -148,10 +148,9 @@ void salvarArquivo(LISTA *list){
 	arq = fopen("USUARIO.DAT", "wb");
 	if(arq == NULL)
 		printf("\nErro na abertura do arquvo");
-	else
-		
-	if(fwrite( list->reg , sizeof(REGISTRO)*tamanhoLista(list) , 1, arq) == 0)
-		printf("\nErro no salvamento no arquivo");
+	else 
+		if(fwrite( list->reg , sizeof(REGISTRO)*tamanhoLista(list) , 1, arq) == 0)
+			printf("\nErro no salvamento no arquivo");
 	fclose(arq);
 	printf("\nfinalizado processo de salvamento \\(*.*)/");
 }
