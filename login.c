@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <string.h>
-#include <ctype.h>
 
+#define DEFAULT_LIST 67 // analizar se é necessario
 #define MAX 100
 #define false -1
 #define true 1
 
 typedef char TYPEKEY;
 FILE *arq, *arq_aux;
+int aux_menu = 0;
 
 //ESTRUTURA DA LISTA
 typedef struct {
@@ -28,29 +29,20 @@ void iniciarLista(LISTA *list){
 int tamanhoLista(LISTA *list){
 	return list->numElemento;
 }
-void exibirLista(LISTA *list){
-	int i;
-	printf("\n\nLista:\n");
-	for(i=0; i<tamanhoLista(list) ; i++){
-		printf("\n%s - %s",
-		list->reg[i].nameUser, list->reg[i].prontUser);
-	}
-	printf("\n");
-}
 int buscaBinaria(LISTA *list, char *nome){
 	int esq, dir, meio;
 	esq = 0;
 	dir = (tamanhoLista(list)-1);
-	
+
 	while(esq<=dir){
 		meio = (esq+dir)/2;
-		if(strcmp(list->reg[meio].nameUser, nome)==0)  
+		if(strcmp(list->reg[meio].nameUser, nome)==0)  //(list->reg[meio].nameUser == nome)
 			return meio;
 		else
-			if(strcmp(list->reg[meio].nameUser, nome) < 0 ) 
+			if(strcmp(list->reg[meio].nameUser, nome) < 0 ) //(list->reg[meio].nameUser  < name) <- comparação de string
 				esq=meio+1;
 			else
-				dir=meio-1;	
+				dir=meio-1;
 	}
 	return false;
 }
@@ -86,41 +78,78 @@ void converterString(char *str){
 	int i;
 	for(i=0; i<strlen(str); i++){
 		str[i] = toupper(str[i]);
-	}	
+	}
 }
-
 //LOGIN
-int loginUser(REGISTRO *reg, LISTA *list){
-	int resultado;
-	printf("\n\nNome de usuário: "); 		fflush(stdin); gets(reg->nameUser);
-	printf("\nProntuário do usuário: "); 	fflush(stdin); gets(reg->prontUser);
-	
-	printf("\n- %-30s, %-10s", reg->nameUser , reg->prontUser );
-	converterString(reg->nameUser);
-	converterString(reg->prontUser);
-	printf("\n- %-30s, %-10s", reg->nameUser , reg->prontUser);
-	resultado = buscaBinaria(list, reg->nameUser);
-	return resultado;
+REGISTRO loginUser(){
+	REGISTRO reg;
+
+	printf("\n\nNome de usuário: "); 		fflush(stdin); gets(reg.nameUser);
+	printf("\nProntuário do usuário: "); 	fflush(stdin); gets(reg.prontUser);
+	converterString(reg.nameUser);
+	converterString(reg.prontUser);
+	return reg;
+}
+//OPCAO DO MENU
+void optMenu(char c){
+    system("cls");
+    switch(c){
+        default:
+            printf("SELECIONE UMA OPCAO VALIDA");
+            getch();
+            break;
+        case '1':
+            //abastece gondola
+            break;
+        case '2':
+            //caixa/pdv
+            break;
+        case '3':
+            //gerenciar usuarios
+            break;
+        case '0':
+            aux_menu = 1;
+            break;
+
+    }
+
+
+}
+//MENU
+void inicializaMenu(){
+    char a;
+    system("cls");
+    printf("------------SISTEMA GERENCIADOR DE SUPERMERCADOS---------------\n");
+    printf("-----------------1.ABASTECER GONDOLAS--------------------------\n");
+    printf("-----------------2.CAIXA/PDV-----------------------------------\n");
+    printf("-----------------3.GERENCIAR USUARIOS--------------------------\n");
+    printf("-----------------0.SAIR----------------------------------------\n");
+    printf("\nEscolha uma opcao: ");
+    a = getch();
+    optMenu(a);
+
 }
 //CODIGO MAIN
 int main(){
 	LISTA list;
 	REGISTRO registro;
 	int aux_busca;
-	
+
+	registro = loginUser();
+
 	iniciarLista(&list);
 	list = lerArquivo();
-	exibirLista(&list);
-	
-	aux_busca = loginUser(&registro, &list);
-	
-	
+	aux_busca = buscaBinaria(&list, registro.nameUser);
+	//printf("\n%d - %-30s, %-10",aux_busca, registro.nameUser , registro.prontUser);
 	if(aux_busca!=false){
-		printf("\n%d - %-30s, %-10s",aux_busca, list.reg[aux_busca].nameUser, list.reg[aux_busca].prontUser);
+		//printf("\n%d - %-30s, %-10",aux_busca, list.reg[aux_busca].nameUser, list.reg[aux_busca].prontUser);
+		while(aux_menu == 0){
+            inicializaMenu();
+		}
 	}
 	else {
 		printf("\n\nUSUARIO E/OU PRONTUARIO INVALIDOS");
-	}	
-	getch();
+		getch();
+	}
 	return 0;
 }
