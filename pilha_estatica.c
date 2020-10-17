@@ -136,7 +136,7 @@ void lerArquivoCarrinho(PILHA *pilha){
 		pilha->topo = qtdRegistrosArq();
 		fread(pilha->reg , sizeof(REGISTRO)*(tamanhoPilha(pilha)), 1, arq);
 	}	
-	fclose(arq);
+	fclose(arq); 
 	printf("\nfinalizado processo de abetura \\(*.*)/");
 }
 
@@ -202,7 +202,8 @@ int main(){
 				getch();
 				break;
 			case 7:
-				lerArquivoCarrinho(&carrinho); 
+				lerArquivoCarrinho(&carrinho);
+				excluirElementoPilha(&carrinho, &produto); 
 				getch();
 				break;
 			case 0:
