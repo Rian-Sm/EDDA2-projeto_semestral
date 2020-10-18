@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <string.h>
 #include <ctype.h>
+#include <locale.h>
 
 #define DEFAULT_LIST 67
 #define MAX 100
@@ -171,7 +172,7 @@ LISTA lerArquivo(){
 
 //MENU INICIAL
 void printMENU(){
-	printf("\nESCONHA UMA DAS OPCOES:");
+	printf("\nGERENCIAMENTO DE USUÁRIOS:");
 	printf("\n==============================================="	);
 	printf("\n1 - iniciar estrutura"							);
 	printf("\n2 - criar cadastro default"						);
@@ -229,6 +230,7 @@ int tipoBusca(LISTA *list){
 
 //MAIN DO CODIGO
 int main(){
+	setlocale(LC_ALL, ""); 	
 	REGISTRO reg;
 	LISTA list;
 	TYPEKEY chave;

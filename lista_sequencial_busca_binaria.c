@@ -9,6 +9,10 @@
 #define false -1
 #define true 1
 
+typedef char TYPEKEY;
+
+FILE *arq_aux, *arq;
+
 //ESTRUTURA DA LISTA
 typedef struct {
 	char	nameUser[100+1];

@@ -100,21 +100,18 @@ void optMenu(char c){
             getch();
             break;
         case '1':
-            //abastece gondola
+            system("pilha_estatica.exe");		//abastece gondola
             break;
         case '2':
-            //caixa/pdv
+            system("fila.exe");					//caixa/pdv
             break;
         case '3':
-            //gerenciar usuarios
+            system("salvar-lista.exe");			//gerenciar usuarios
             break;
         case '0':
             aux_menu = 1;
             break;
-
     }
-
-
 }
 //MENU
 void inicializaMenu(){
@@ -142,16 +139,17 @@ int main(){
 	iniciarLista(&list);
 	list = lerArquivo();
 	aux_busca = buscaBinaria(&list, registro.nameUser);
-	//printf("\n%d - %-30s, %-10",aux_busca, registro.nameUser , registro.prontUser);
+	
 	if(aux_busca!=false){
-		//printf("\n%d - %-30s, %-10",aux_busca, list.reg[aux_busca].nameUser, list.reg[aux_busca].prontUser);
-		while(aux_menu == 0){
+		if(strcmp(list.reg[aux_busca].prontUser, registro.prontUser )==0){
+			while(aux_menu == 0){
             inicializaMenu();
-		}
+			}
+		} else 
+			printf("\n\nUSUARIO E/OU PRONTUARIO INVALIDOS");
 	}
-	else {
+	else
 		printf("\n\nUSUARIO E/OU PRONTUARIO INVALIDOS");
-		getch();
-	}
+	getch();
 	return 0;
 }

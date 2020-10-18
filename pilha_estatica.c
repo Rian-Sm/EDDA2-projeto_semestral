@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <locale.h>
 
-
 #define MAX 10     							//quantidade de gondulas
 #define MAX_ITENS 5							//quantidade de elementos na gondula
 #define MAX_CARRINHO 50						//quantidade de elementos no carrinho
@@ -203,6 +202,11 @@ int main(){
     			if ((gondula>9) || (gondula<0))
     				printf("\nEssa gondula não existe!");
 				else {
+					if(tamanhoPilha(&polha[gondula])==0){
+						printf("\nGondula vazia");
+						getch();
+						break;
+					}
 					excluirElementoPilha(&polha[gondula], &produto);
 					inserirElementoCarrinho(&carrinho, produto); 
 					printf("\nproduto resgatado: %s", produto.NOMEPROD);
