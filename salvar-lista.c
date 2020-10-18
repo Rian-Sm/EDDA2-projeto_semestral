@@ -276,6 +276,8 @@ int main(){
 				printf("\nInserir elementos de forma ordenada: ");
 				printf("\n\nQual nome da pessoa: "); fflush(stdin); gets(reg.nameUser);
 				printf("\n\nQual prontuario da pessoa: "); fflush(stdin); gets(reg.prontUser);
+				converterString(&*reg.nameUser);
+				converterString(&*reg.prontUser);
 				aux_busca = inserirElementoListaOrdenada(&list, reg);
 				if(aux_busca == false)
 					printf("\nErro na criacao do elemento");
@@ -283,11 +285,13 @@ int main(){
 				getch();
 				break;
 			case 7:
-				printf("\nExcluir elemento: qual a chave do elemento? "); scanf("%s", &chave);
+				printf("\nExcluir elemento: qual a CHAVE do elemento? "); scanf("%s", &chave);
+				converterString(&*reg.prontUser);
 				aux_busca = excluirElementoLista(&chave, &list);
 				if(aux_busca==false)
 					printf("\nErro na exclusao do elemento");
-				printf("\nElemento excluido com sucesso");
+				else
+					printf("\nElemento excluido com sucesso");
 				getch();
 				break;
 			case 8:

@@ -125,7 +125,6 @@ void inicializaMenu(){
     printf("\nEscolha uma opcao: ");
     a = getch();
     optMenu(a);
-
 }
 //CODIGO MAIN
 int main(){

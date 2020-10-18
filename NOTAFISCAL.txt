@@ -1,12 +1,9 @@
 ----------------------NOTA FISCAL------------------------
-[18/10/20][00:33:30]
+[18/10/20][15:35:20]
 ----------------------PRODUTOS---------------------------
-1x doritos classico-doritos gostoso hmmm dlc-0.40kg-R$6.99
-1x doritos classico-doritos gostoso hmmm dlc-0.40kg-R$6.99
-1x doritos verde-doritos gostoso verdinho -0.70kg-R$8.99
-1x doritos verde-doritos gostoso verdinho -0.70kg-R$8.99
-1x doritos verde-doritos gostoso verdinho -0.70kg-R$8.99
-1x doritos verde-doritos gostoso verdinho -0.70kg-R$8.99
-1x doritos verde-doritos gostoso verdinho -0.70kg-R$8.99
+1x doritos-doritos apimentado-0.50kg-R$7.99
+1x abacate-abacate gostoso-1.00kg-R$9.90
+1x bananinha-banana verde-1.00kg-R$5.50
+1x doritos-doritos apimentado-0.50kg-R$7.99
 ---------------------------------------------------------
-valor total: 58.93
+valor total: 31.38

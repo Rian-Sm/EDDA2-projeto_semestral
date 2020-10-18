@@ -56,7 +56,6 @@ int main(){
         while ( !feof(arq) ){
             fread(&reg_car, sizeof(reg_car), 1, arq);
             if(!feof(arq)){
-                //fprintf(nota,"1x %s-%s-%.2fkg-R$%.2f\n", reg_car.NOMEPROD, reg_car.DESC, reg_car.PESO, reg_car.VALOR);
                 reg_fila[c] = reg_car;
                 c--;
                 valortotal += reg_car.VALOR;
